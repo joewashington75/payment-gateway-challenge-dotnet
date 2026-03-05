@@ -9,22 +9,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="Moq" />
     <PackageReference Include="Shouldly" />
-    <PackageReference Include="Testcontainers" />
     <PackageReference Include="xunit.v3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\PaymentGateway.Api\PaymentGateway.Api.csproj" />
+    <ProjectReference Include="..\..\src\PaymentGateway.Application\PaymentGateway.Application.csproj" />
     <ProjectReference Include="..\..\src\PaymentGateway.Contracts\PaymentGateway.Contracts.csproj" />
     <ProjectReference Include="..\..\src\PaymentGateway.Core\PaymentGateway.Core.csproj" />
     <ProjectReference Include="..\PaymentGateway.Testing\PaymentGateway.Testing.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\..\imposters\**" CopyToOutputDirectory="PreserveNewest" LinkBase="imposters" />
   </ItemGroup>
 
 </Project>

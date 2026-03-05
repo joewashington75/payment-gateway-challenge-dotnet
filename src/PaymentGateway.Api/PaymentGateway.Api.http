@@ -1,0 +1,162 @@
+@baseUrl = https://localhost:7092
+
+### =====================
+### POST - Process Payment
+### =====================
+
+### Authorized payment (card ends in odd digit)
+POST {{baseUrl}}/api/payments
+Content-Type: application/json
+
+{
+  "card_number": "2222405343248877",
+  "expiry_month": 4,
+  "expiry_year": 2026,
+  "currency": "GBP",
+  "amount": 100,
+  "cvv": "123"
+}
+
+### Declined payment (card ends in even digit)
+POST {{baseUrl}}/api/payments
+Content-Type: application/json
+
+{
+  "card_number": "2222405343248878",
+  "expiry_month": 4,
+  "expiry_year": 2026,
+  "currency": "USD",
+  "amount": 5000,
+  "cvv": "456"
+}
+
+### Bank unavailable (card ends in 0)
+POST {{baseUrl}}/api/payments
+Content-Type: application/json
+
+{
+  "card_number": "2222405343248870",
+  "expiry_month": 4,
+  "expiry_year": 2026,
+  "currency": "EUR",
+  "amount": 2500,
+  "cvv": "789"
+}
+
+### =====================
+### POST - Validation Errors
+### =====================
+
+### Invalid card number (too short)
+POST {{baseUrl}}/api/payments
+Content-Type: application/json
+
+{
+  "card_number": "12345",
+  "expiry_month": 4,
+  "expiry_year": 2026,
+  "currency": "GBP",
+  "amount": 100,
+  "cvv": "123"
+}
+
+### Invalid card number (non-numeric)
+POST {{baseUrl}}/api/payments
+Content-Type: application/json
+
+{
+  "card_number": "2222ABCD43248877",
+  "expiry_month": 4,
+  "expiry_year": 2026,
+  "currency": "GBP",
+  "amount": 100,
+  "cvv": "123"
+}
+
+### Invalid expiry month (out of range)
+POST {{baseUrl}}/api/payments
+Content-Type: application/json
+
+{
+  "card_number": "2222405343248877",
+  "expiry_month": 13,
+  "expiry_year": 2026,
+  "currency": "GBP",
+  "amount": 100,
+  "cvv": "123"
+}
+
+### Expired card (past date)
+POST {{baseUrl}}/api/payments
+Content-Type: application/json
+
+{
+  "card_number": "2222405343248877",
+  "expiry_month": 1,
+  "expiry_year": 2020,
+  "currency": "GBP",
+  "amount": 100,
+  "cvv": "123"
+}
+
+### Invalid currency
+POST {{baseUrl}}/api/payments
+Content-Type: application/json
+
+{
+  "card_number": "2222405343248877",
+  "expiry_month": 4,
+  "expiry_year": 2026,
+  "currency": "JPY",
+  "amount": 100,
+  "cvv": "123"
+}
+
+### Invalid amount (zero)
+POST {{baseUrl}}/api/payments
+Content-Type: application/json
+
+{
+  "card_number": "2222405343248877",
+  "expiry_month": 4,
+  "expiry_year": 2026,
+  "currency": "GBP",
+  "amount": 0,
+  "cvv": "123"
+}
+
+### Invalid CVV (too short)
+POST {{baseUrl}}/api/payments
+Content-Type: application/json
+
+{
+  "card_number": "2222405343248877",
+  "expiry_month": 4,
+  "expiry_year": 2026,
+  "currency": "GBP",
+  "amount": 100,
+  "cvv": "12"
+}
+
+### Invalid CVV (non-numeric)
+POST {{baseUrl}}/api/payments
+Content-Type: application/json
+
+{
+  "card_number": "2222405343248877",
+  "expiry_month": 4,
+  "expiry_year": 2026,
+  "currency": "GBP",
+  "amount": 100,
+  "cvv": "ABC"
+}
+
+### =====================
+### GET - Retrieve Payment
+### =====================
+@paymentId = 3baa5587-009d-4aad-92e1-32d0e642dd8a
+### Get payment by ID (replace with a valid ID from a POST response)
+GET {{baseUrl}}/api/payments/{{paymentId}}
+
+### Payment not found
+GET {{baseUrl}}/api/payments/00000000-0000-0000-0000-000000000000
